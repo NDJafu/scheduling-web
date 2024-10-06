@@ -4,12 +4,14 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 
 const NotesPage = () => {
-  const { data, isFetching } = useQuery({
+  const { data, isFetching, isError, error } = useQuery({
     queryKey: [NOTES_KEY],
     queryFn: getNotes,
   });
 
   if (isFetching) return <div>Loading...</div>;
+
+  if (isError) console.log(error);
 
   return (
     <div>
