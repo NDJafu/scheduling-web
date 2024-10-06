@@ -6,6 +6,7 @@ import SignInPage from "./pages/auth/SignIn.page";
 import SignUpPage from "./pages/auth/SignUp.page";
 import RootLayout from "./layouts/RootLayout";
 import ReminderPage from "./pages/Reminder.page";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const router = createBrowserRouter([
   {
@@ -37,11 +38,15 @@ const router = createBrowserRouter([
   },
 ]);
 
+const queryClient = new QueryClient();
+
 function App() {
   return (
-    <ThemeProvider defaultTheme="light" storageKey="app-theme">
-      <RouterProvider router={router} />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider defaultTheme="light" storageKey="app-theme">
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
 

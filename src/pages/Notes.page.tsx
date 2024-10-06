@@ -1,10 +1,20 @@
+import { getNotes, Notes, NOTES_KEY } from "@/apis/notes.api";
 import { Button } from "@/components/ui/button";
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 
 const NotesPage = () => {
+  const { data, isFetching } = useQuery({
+    queryKey: [NOTES_KEY],
+    queryFn: getNotes,
+  });
+
+  if (isFetching) return <div>Loading...</div>;
+
   return (
     <div>
-      <p>NotesPage</p>
+      {data?.map((note: Notes) => <div>{note.name}</div>)}
+
       <Button asChild>
         <Link to="/reminders">Go to reminders</Link>
       </Button>
