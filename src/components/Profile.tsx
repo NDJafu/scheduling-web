@@ -7,10 +7,19 @@ import {
 } from "./ui/popover";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
-import { SignOutButton, useUser } from "@clerk/clerk-react";
+// import { SignOutButton } from "@clerk/clerk-react";
 
 const Profile = () => {
-  const { user } = useUser();
+  // const { user } = useUser();
+  const user = {
+    imageUrl: "https://picsum.photos/320",
+    username: "example",
+    emailAddresses: [
+      {
+        emailAddress: "example@example.com",
+      },
+    ],
+  };
 
   return (
     <Popover>
@@ -44,9 +53,9 @@ const Profile = () => {
             </button>
           </div>
           <h4 className="text-2xl font-semibold">Chào {user?.username},</h4>
-          <SignOutButton redirectUrl="/sign-in">
-            <Button className="font-semibold">Đăng xuất</Button>
-          </SignOutButton>
+          {/* <SignOutButton redirectUrl="/sign-in"> */}
+          <Button className="font-semibold">Đăng xuất</Button>
+          {/* </SignOutButton> */}
         </div>
       </PopoverContent>
     </Popover>

@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import SearchBar from "../SearchBar";
 import ToolBar from "../ToolBar";
 import Profile from "../Profile";
-import { SignedIn, SignedOut } from "@clerk/clerk-react";
-import { Button } from "../ui/button";
+// import { SignedIn, SignedOut } from "@clerk/clerk-react";
+// import { Button } from "../ui/button";
 import { useMainLayoutContext } from "@/contexts/MainLayout.context";
 
 const Header = () => {
@@ -33,17 +33,17 @@ const Header = () => {
         </Link>
         <SearchBar />
         <ToolBar />
-        <SignedOut>
+        {/* <SignedOut>
           <Button asChild className="ml-8">
             <Link to="/sign-up">Sign up</Link>
           </Button>
           <Button asChild className="mx-1 ml-4" variant="secondary">
             <Link to="/sign-in">Sign in</Link>
           </Button>
-        </SignedOut>
-        <SignedIn>
-          <Profile />
-        </SignedIn>
+        </SignedOut> */}
+        {/* <SignedIn> */}
+        <Profile />
+        {/* </SignedIn> */}
       </div>
     </header>
   );
