@@ -1,27 +1,51 @@
+import { api } from "@/apis";
 import Header from "@/components/common/Header";
 import Sidebar from "@/components/common/Sidebar";
 import { MainLayoutProvider } from "@/contexts/MainLayout.context";
 import { useAuth } from "@clerk/clerk-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
 const MainLayout = () => {
-  const { isSignedIn, isLoaded } = useAuth();
+  const [token, setToken] = useState<string | null>();
+  const { isSignedIn, isLoaded, getToken } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
+    const requestInterceptor = api.interceptors.request.use(
+      async (config) => {
+        const token = await getToken();
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
+      },
+    );
+
+    getToken().then((token) => {
+      setToken(token);
+    });
+
     if (isLoaded && !isSignedIn) {
       navigate("/sign-in");
     }
+
+    return () => {
+      api.interceptors.request.eject(requestInterceptor);
+    };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoaded]);
+  }, []);
 
   return (
     <MainLayoutProvider>
       <Header />
       <main className="relative flex h-full">
         <Sidebar />
-        <Outlet />
+        {token ? <Outlet /> : <div>Loading...</div>}
       </main>
     </MainLayoutProvider>
   );

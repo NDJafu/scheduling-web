@@ -1,15 +1,29 @@
 import useToggle from "@/hooks/useToggle";
-import { createContext, ReactNode, useContext } from "react";
+import { createContext, ReactNode, useContext, useEffect } from "react";
 
-interface MainLayoutState {
+interface LayoutSettings {
   showSidebar: boolean;
+}
+
+interface MainLayoutState extends LayoutSettings {
   toggleSidebar: VoidFunction;
 }
 
 const MainLayoutContext = createContext<Partial<MainLayoutState>>({});
 
 const MainLayoutProvider = ({ children }: { children: ReactNode }) => {
-  const { value, toggle } = useToggle(true);
+  const layoutSettings: LayoutSettings = JSON.parse(
+    localStorage.getItem("layout_settings") ?? "{}",
+  );
+
+  const { value, toggle } = useToggle(layoutSettings.showSidebar);
+
+  useEffect(() => {
+    const newLayoutSettings: LayoutSettings = {
+      showSidebar: value!,
+    };
+    localStorage.setItem("layout_settings", JSON.stringify(newLayoutSettings));
+  }, [value]);
 
   return (
     <MainLayoutContext.Provider

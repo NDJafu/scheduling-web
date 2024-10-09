@@ -18,9 +18,9 @@ const SidebarNavLink = ({ to, children, icon }: SidebarNavLinkProps) => {
       to={to}
       className={({ isActive }) =>
         cn(
-          "flex items-center rounded-full p-1 transition duration-300 ease-in-out",
+          "flex items-center rounded-full p-1 text-lg transition duration-300 ease-in-out",
           {
-            "bg-gray-200/50 dark:bg-white/5": isActive,
+            "bg-gray-200/50 dark:bg-neutral-800/50": isActive,
             "rounded-l-none px-3": showSidebar,
           },
         )
