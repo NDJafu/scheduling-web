@@ -8,11 +8,13 @@ import { Outlet, useNavigate } from "react-router-dom";
 
 const MainLayout = () => {
   const [token, setToken] = useState<string | null>();
-  const { isSignedIn, isLoaded, getToken } = useAuth();
+  const { isSignedIn, getToken } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const requestInterceptor = api.interceptors.request.use(
+    let requestInterceptor = null;
+
+    requestInterceptor = api.interceptors.request.use(
       async (config) => {
         const token = await getToken();
         if (token) {
@@ -29,7 +31,7 @@ const MainLayout = () => {
       setToken(token);
     });
 
-    if (isLoaded && !isSignedIn) {
+    if (!isSignedIn) {
       navigate("/sign-in");
     }
 

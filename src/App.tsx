@@ -7,6 +7,7 @@ import SignUpPage from "./pages/auth/SignUp.page";
 import RootLayout from "./layouts/RootLayout";
 import ReminderPage from "./pages/Reminder.page";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import ArchivesPage from "./pages/Archives.page";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
           {
             path: "/reminders",
             element: <ReminderPage />,
+          },
+          {
+            path: "/archives",
+            element: <ArchivesPage />,
           },
         ],
       },

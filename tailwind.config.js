@@ -7,6 +7,19 @@ export default {
       nunito: ["Nunito", "sans-serif"],
     },
     extend: {
+      keyframes: {
+        fade: {
+          "80%": {
+            opacity: 1,
+          },
+          "100%": {
+            opacity: 0,
+          },
+        },
+      },
+      animation: {
+        "fade-away": "fade 300ms ease-out forwards",
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

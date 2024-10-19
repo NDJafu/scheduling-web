@@ -7,6 +7,7 @@ import {
   Settings2,
   Megaphone,
   CircleHelp,
+  LayoutList,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -15,9 +16,16 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { useTheme } from "./theme-provider";
+import { useMainLayoutContext } from "@/contexts/MainLayout.context";
 
 const ToolBar = () => {
   const { theme, setTheme } = useTheme();
+  const { layoutMode, setLayoutMode } = useMainLayoutContext();
+
+  const layoutIcon = {
+    grid: <LayoutGrid />,
+    list: <LayoutList />,
+  };
 
   const isLightMode = theme === "light";
 
@@ -26,8 +34,11 @@ const ToolBar = () => {
       <button className="rounded-full p-3 transition-colors hover:bg-gray-700/25 hover:text-black/90 focus:bg-gray-700/10 dark:hover:bg-white/25 dark:hover:text-white dark:focus:bg-white/10">
         <RotateCwIcon size={24} />
       </button>
-      <button className="rounded-full p-3 transition-colors hover:bg-gray-700/25 hover:text-black/90 focus:bg-gray-700/10 dark:hover:bg-white/25 dark:hover:text-white dark:focus:bg-white/10">
-        <LayoutGrid size={24} />
+      <button
+        className="rounded-full p-3 transition-colors hover:bg-gray-700/25 hover:text-black/90 focus:bg-gray-700/10 dark:hover:bg-white/25 dark:hover:text-white dark:focus:bg-white/10"
+        onClick={() => setLayoutMode(layoutMode === "grid" ? "list" : "grid")}
+      >
+        {layoutIcon[layoutMode]}
       </button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild className="outline-none ring-0">

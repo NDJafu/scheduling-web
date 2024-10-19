@@ -27,7 +27,7 @@ const SidebarNavLink = ({ to, children, icon }: SidebarNavLinkProps) => {
       }
     >
       <span
-        className={cn("p-3", {
+        className={cn("p-3 group-hover/sidebar:mr-4", {
           "mr-4": showSidebar,
         })}
       >
@@ -35,7 +35,7 @@ const SidebarNavLink = ({ to, children, icon }: SidebarNavLinkProps) => {
       </span>
       <p
         className={cn(
-          "max-w-[200px] truncate font-medium group-hover/sidebar:opacity-100",
+          "max-w-[200px] truncate font-medium group-hover/sidebar:translate-x-0 group-hover/sidebar:opacity-100",
           {
             "translate-x-0 opacity-100": showSidebar,
             "-translate-x-96 opacity-0": !showSidebar,

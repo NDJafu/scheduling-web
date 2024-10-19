@@ -1,4 +1,5 @@
-import { FileText, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
+import logo from "@/assets/logo.png";
 import { Link } from "react-router-dom";
 import SearchBar from "../SearchBar";
 import ToolBar from "../ToolBar";
@@ -21,11 +22,7 @@ const Header = () => {
         </button>
         <Link to="/">
           <div className="gap flex items-center">
-            <FileText
-              floodColor="#fbbf24"
-              className="text-amber-400"
-              size={40}
-            />
+            <img src={logo} className="mr-1 h-10" />
             <h1 className="pl-1 text-2xl font-bold hover:underline">
               Keep yourself safe
             </h1>
