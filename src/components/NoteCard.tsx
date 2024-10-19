@@ -9,13 +9,7 @@ import {
 import { Notes } from "@/apis/notes.api";
 import { cn } from "@/lib/utils";
 
-const NoteCard = ({
-  id,
-  title,
-  content,
-  isPinned,
-  isArchived,
-}: Partial<Notes>) => {
+const NoteCard = ({ title, content, isPinned, isArchived }: Partial<Notes>) => {
   return (
     <Card className="group/note relative h-fit">
       <CardHeader>
