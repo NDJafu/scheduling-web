@@ -6,10 +6,27 @@ import {
   CardDescription,
   CardContent,
 } from "./ui/card";
-import { Notes } from "@/apis/notes.api";
+import { Notes, NOTES_KEY, updateNote } from "@/apis/notes.api";
 import { cn } from "@/lib/utils";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-const NoteCard = ({ title, content, isPinned, isArchived }: Partial<Notes>) => {
+const NoteCard = ({ id, title, content, isPinned, isArchived }: Notes) => {
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation({
+    mutationFn: updateNote,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [NOTES_KEY] }),
+  });
+
+  const togglePinned = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+    e.stopPropagation();
+    mutate({ id, isPinned: !isPinned });
+  };
+
+  const toggleArchived = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+    e.stopPropagation();
+    mutate({ id, isArchived: !isArchived });
+  };
+
   return (
     <Card className="group/note relative h-fit">
       <CardHeader>
@@ -25,7 +42,7 @@ const NoteCard = ({ title, content, isPinned, isArchived }: Partial<Notes>) => {
             "rounded-full p-1.5 hover:cursor-pointer hover:bg-gray-200/50 dark:hover:bg-neutral-800",
             isArchived && "fill-muted-foreground",
           )}
-          onClick={(e) => e.stopPropagation()}
+          onClick={toggleArchived}
         />
         <MoreVertical
           size={32}
@@ -38,7 +55,7 @@ const NoteCard = ({ title, content, isPinned, isArchived }: Partial<Notes>) => {
             "absolute right-2 top-2 rounded-full p-2 hover:cursor-pointer hover:bg-gray-200/50 dark:hover:bg-neutral-800",
             isPinned && "fill-muted-foreground",
           )}
-          onClick={(e) => e.stopPropagation()}
+          onClick={togglePinned}
         />
       </CardContent>
     </Card>

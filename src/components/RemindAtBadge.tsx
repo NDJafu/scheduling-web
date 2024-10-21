@@ -18,14 +18,14 @@ const RemindAtBadge = () => {
       hour: "numeric",
       minute: "numeric",
       hour12: true,
-    }).format(remindAt);
+    }).format(new Date(remindAt));
   }, [remindAt]);
 
   if (displayReminder)
     return (
       <Badge
         variant="secondary"
-        className="ml-4 mt-2 inline-flex items-center gap-1 rounded-full px-1 py-0.5"
+        className="mt-2 inline-flex items-center gap-1 rounded-full px-1 py-0.5"
       >
         <Clock size={14} strokeWidth={1.5} />
         <span className="ml-2">{displayReminder}</span>

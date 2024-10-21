@@ -1,4 +1,5 @@
 import { api } from ".";
+import { RequiredFields } from "@/lib/helpers";
 
 export interface Notes {
   id: string;
@@ -27,4 +28,10 @@ export const getNotesByUser = async (userId: string): Promise<Notes[]> => {
 
 export const addNotes = async (note: Partial<Notes> | Partial<Notes>[]) => {
   await api.post("/notes", { note });
+};
+
+export const updateNote = async (
+  note: RequiredFields<Partial<Notes>, "id">,
+) => {
+  await api.patch(`/notes/${note.id}`, { ...note });
 };

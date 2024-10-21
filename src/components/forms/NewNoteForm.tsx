@@ -57,11 +57,14 @@ const NewNoteForm = ({ setShowForm }: NewNoteFormProps) => {
         <textarea
           {...register("content")}
           rows={1}
+          autoFocus
           placeholder="Take a note..."
           className="w-full resize-none appearance-none bg-inherit px-4 py-2 outline-none ring-0"
           onChange={resizeTextArea}
         />
-        <RemindAtBadge />
+        <div className="ml-4">
+          <RemindAtBadge />
+        </div>
         <div className="flex items-center px-4 py-2">
           <AddReminder />
           <Button

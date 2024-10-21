@@ -1,20 +1,35 @@
-import { Notes } from "@/apis/notes.api";
-import { FormProvider, useForm } from "react-hook-form";
+import { Notes, NOTES_KEY, updateNote } from "@/apis/notes.api";
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "../ui/button";
 import AddReminder from "./AddReminder";
 import RemindAtBadge from "../RemindAtBadge";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-const EditNoteForm = (note: Partial<Notes>) => {
-  const { title, content, remindAt } = note;
+type EditNoteFormProps = Notes & {
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const EditNoteForm = ({ setOpen, ...note }: EditNoteFormProps) => {
+  const { id, title, content, remindAt } = note;
+  const queryClient = useQueryClient();
+
   const form = useForm<Notes>({
-    defaultValues: {
-      title,
-      content,
-      remindAt,
+    defaultValues: { id, title, content, remindAt },
+  });
+
+  const { register, handleSubmit } = form;
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: updateNote,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [NOTES_KEY] });
+      setOpen(false);
     },
   });
 
-  const { register } = form;
+  const onSubmit: SubmitHandler<Notes> = (data) => {
+    mutate(data);
+  };
 
   const resizeTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     e.target.style.setProperty("height", `auto`);
@@ -23,7 +38,7 @@ const EditNoteForm = (note: Partial<Notes>) => {
 
   return (
     <FormProvider {...form}>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <input
           {...register("title")}
           type="text"
@@ -39,9 +54,11 @@ const EditNoteForm = (note: Partial<Notes>) => {
           onChange={resizeTextArea}
         />
         <RemindAtBadge />
-        <div className="flex items-center">
+        <div className="flex items-center py-2">
           <AddReminder />
-          <Button className="ml-auto block">Close</Button>
+          <Button type="submit" className="ml-auto block" disabled={isPending}>
+            Close
+          </Button>
         </div>
       </form>
     </FormProvider>
