@@ -10,17 +10,32 @@ import {
 } from "./ui/dialog";
 import { useEditNoteCard } from "@/hooks/useEditNoteCard";
 import EditNoteForm from "./forms/EditNoteForm";
+import { ComponentPropsWithoutRef } from "react";
+import { cn } from "@/lib/utils";
 
-const EditNoteCard = (note: Notes) => {
+type EditNoteCardProps = { note: Notes } & ComponentPropsWithoutRef<"button">;
+
+const EditNoteCard = ({ note, className }: EditNoteCardProps) => {
   const { open, setOpen, triggerRef, transform } = useEditNoteCard();
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
         ref={triggerRef}
-        className="text-left transition-[transform_opacity_width] duration-300 data-[state=open]:animate-fade-away"
+        className={cn(
+          "text-left transition-[transform_opacity_width] duration-300 data-[state=open]:animate-fade-away",
+          "xl:basis-[calc(100%_/_6_-_16px_*_(5_/_6))]",
+          "lg:basis-[calc(100%_/_4_-_16px_*_(3_/_4))]",
+          "md:basis-[calc(100%_/_3_-_16px_*_(2_/_3))]",
+          "basis-[calc(100%_/_2_-_16px_*_(1_/_2))]",
+          className,
+        )}
         data-state={open ? "open" : "closed"}
-        style={{ transform }}
+        data-label={note.id}
+        style={{
+          transform,
+          // flexBasis: "calc(100% / 6 - 16px * (5 / 6))",
+        }}
       >
         <NoteCard {...note} />
       </DialogTrigger>

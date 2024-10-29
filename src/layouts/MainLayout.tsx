@@ -45,7 +45,7 @@ const MainLayout = () => {
   return (
     <MainLayoutProvider>
       <Header />
-      <main className="relative flex h-full">
+      <main className="relative flex overflow-scroll">
         <Sidebar />
         {token ? <Outlet /> : <div>Loading...</div>}
       </main>

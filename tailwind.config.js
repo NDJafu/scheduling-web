@@ -9,7 +9,7 @@ export default {
     extend: {
       keyframes: {
         fade: {
-          "80%": {
+          "95%": {
             opacity: 1,
           },
           "100%": {

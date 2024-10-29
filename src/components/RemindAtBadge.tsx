@@ -5,7 +5,7 @@ import { Badge } from "./ui/badge";
 import { Clock, X } from "lucide-react";
 
 const RemindAtBadge = () => {
-  const { watch, unregister } = useFormContext<Notes>();
+  const { watch, setValue } = useFormContext<Notes>();
 
   const remindAt = watch("remindAt");
 
@@ -32,7 +32,7 @@ const RemindAtBadge = () => {
         <button
           type="button"
           className="rounded-full hover:bg-gray-300/25 dark:hover:bg-neutral-700/75"
-          onClick={() => unregister("remindAt")}
+          onClick={() => setValue("remindAt", null)}
         >
           <X size={14} strokeWidth={1.5} />
         </button>

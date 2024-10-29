@@ -7,7 +7,7 @@ export interface Notes {
   content: string;
   isPinned: boolean;
   isArchived: boolean;
-  remindAt: Date;
+  remindAt: Date | null;
   images: { url: string } | { url: string }[];
   createdAt: string;
   createdBy: string;
@@ -34,4 +34,8 @@ export const updateNote = async (
   note: RequiredFields<Partial<Notes>, "id">,
 ) => {
   await api.patch(`/notes/${note.id}`, { ...note });
+};
+
+export const deleteNote = async (noteId: string) => {
+  await api.delete(`/notes/${noteId}`);
 };

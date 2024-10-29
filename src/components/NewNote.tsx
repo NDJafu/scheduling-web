@@ -39,18 +39,9 @@ const NewNote = () => {
   return (
     <div
       id={id}
-      className="m-auto w-1/3 rounded-xl border bg-card text-card-foreground shadow"
+      className="mx-auto w-2/3 rounded-xl border bg-card text-card-foreground shadow lg:w-1/3"
     >
-      {!showForm ? (
-        <div className="relative">
-          <input
-            placeholder="Take a note..."
-            className="w-full appearance-none bg-inherit px-4 py-2 text-lg font-semibold outline-none ring-0"
-          />
-        </div>
-      ) : (
-        <NewNoteForm {...{ setShowForm }} />
-      )}
+      <NewNoteForm {...{ showForm, setShowForm }} />
     </div>
   );
 };

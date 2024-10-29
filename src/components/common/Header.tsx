@@ -12,7 +12,7 @@ const Header = () => {
   const { toggleSidebar } = useMainLayoutContext();
 
   return (
-    <header className="p-2 shadow-md dark:shadow-gray-300/5">
+    <header className="bg-background p-2 shadow-md dark:shadow-gray-300/5">
       <div className="flex items-center">
         <button
           className="mx-1 rounded-full p-3 transition-colors hover:bg-gray-700/25 hover:text-black/90 focus:bg-gray-700/10 dark:hover:bg-white/25 dark:hover:text-white dark:focus:bg-white/10"

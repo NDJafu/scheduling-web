@@ -4,14 +4,16 @@ import AddReminder from "./AddReminder";
 import { addNotes, Notes, NOTES_KEY } from "@/apis/notes.api";
 import { useUser } from "@clerk/clerk-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import React from "react";
+import React, { useEffect } from "react";
 import RemindAtBadge from "../RemindAtBadge";
+import { cn } from "@/lib/utils";
 
 interface NewNoteFormProps {
+  showForm: boolean;
   setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const NewNoteForm = ({ setShowForm }: NewNoteFormProps) => {
+const NewNoteForm = ({ showForm, setShowForm }: NewNoteFormProps) => {
   const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation({
     mutationFn: addNotes,
@@ -29,7 +31,7 @@ const NewNoteForm = ({ setShowForm }: NewNoteFormProps) => {
     },
   });
 
-  const { register, handleSubmit } = form;
+  const { register, handleSubmit, reset } = form;
 
   const onSubmit: SubmitHandler<Notes> = (data) => {
     if (data.content === "") {
@@ -45,27 +47,41 @@ const NewNoteForm = ({ setShowForm }: NewNoteFormProps) => {
     e.target.style.setProperty("height", `${e.target.scrollHeight}px`);
   };
 
+  useEffect(() => {
+    if (!showForm) reset();
+  }, [showForm, reset]);
+
   return (
     <FormProvider {...form}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col justify-center"
+      >
         <input
           {...register("title")}
           placeholder="Title"
-          className="w-full appearance-none bg-inherit px-4 py-2 text-lg font-semibold leading-none outline-none ring-0"
+          className={cn(
+            "w-full appearance-none bg-inherit px-4 py-2 text-lg font-semibold leading-none outline-none ring-0",
+            { hidden: !showForm },
+          )}
           maxLength={256}
         />
         <textarea
           {...register("content")}
           rows={1}
-          autoFocus
           placeholder="Take a note..."
-          className="w-full resize-none appearance-none bg-inherit px-4 py-2 outline-none ring-0"
+          className={cn(
+            "w-full resize-none appearance-none bg-inherit px-4 py-2 outline-none ring-0",
+            { "text-lg": !showForm },
+          )}
           onChange={resizeTextArea}
         />
-        <div className="ml-4">
+        <div className={cn("ml-4", { hidden: !showForm })}>
           <RemindAtBadge />
         </div>
-        <div className="flex items-center px-4 py-2">
+        <div
+          className={cn("flex items-center px-4 py-2", { hidden: !showForm })}
+        >
           <AddReminder />
           <Button
             type="submit"

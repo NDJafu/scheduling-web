@@ -13,11 +13,11 @@ const Sidebar = () => {
         "group/sidebar h-full -translate-x-full space-y-4 transition-[width] duration-300 ease-in-out",
         "data-[state=closed]:w-[72px] data-[state=open]:w-72 data-[state=closed]:p-2 data-[state=open]:py-2",
         "data-[state=closed]:hover:w-72 data-[state=closed]:hover:delay-500",
-        "lg:translate-x-0",
+        "translate-x-0",
       )}
       data-state={sidebarDisplayState}
     >
-      <nav>
+      <nav className="flex flex-col">
         <SidebarNavLink to="/" icon="Lightbulb">
           Notes
         </SidebarNavLink>

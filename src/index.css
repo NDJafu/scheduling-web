@@ -68,9 +68,9 @@
     @apply border-border;
   }
   body {
-    @apply bg-background font-nunito text-foreground;
+    @apply overflow-hidden bg-background font-nunito text-foreground;
   }
   #root {
-    @apply flex h-screen flex-col;
+    @apply flex max-h-screen flex-col overflow-hidden;
   }
 }
