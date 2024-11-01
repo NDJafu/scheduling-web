@@ -14,7 +14,12 @@ const EditNoteForm = ({ setOpen, ...note }: EditNoteFormProps) => {
   const queryClient = useQueryClient();
 
   const form = useForm<Notes>({
-    defaultValues: { id, title, content, remindAt },
+    defaultValues: {
+      id,
+      title,
+      content,
+      remindAt: new Date(`${remindAt} UTC`),
+    },
   });
 
   const { register, handleSubmit } = form;

@@ -7,8 +7,8 @@ export interface Notes {
   content: string;
   isPinned: boolean;
   isArchived: boolean;
-  remindAt: Date | null;
-  images: { url: string } | { url: string }[];
+  remindAt: string | null;
+  images: { url: string }[];
   createdAt: string;
   createdBy: string;
   updatedAt: string;

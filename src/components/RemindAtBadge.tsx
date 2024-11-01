@@ -12,16 +12,18 @@ const RemindAtBadge = () => {
   const displayReminder = useMemo(() => {
     if (!remindAt) return undefined;
 
-    return new Intl.DateTimeFormat("en-US", {
+    const time = new Date(remindAt).toLocaleString("en-US", {
       weekday: "short",
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
       hour12: true,
-    }).format(new Date(remindAt));
+    });
+
+    return time;
   }, [remindAt]);
 
-  if (displayReminder)
+  if (displayReminder !== "Invalid Date")
     return (
       <Badge
         variant="secondary"

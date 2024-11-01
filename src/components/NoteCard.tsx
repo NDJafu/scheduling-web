@@ -1,4 +1,4 @@
-import { Bookmark, Clock, Pin } from "lucide-react";
+import { Bookmark, Clock, ImageIcon, Pin } from "lucide-react";
 import {
   Card,
   CardHeader,
@@ -13,6 +13,7 @@ import NoteCardOptions from "./NoteCardOptions";
 import { Badge } from "./ui/badge";
 import { useMemo } from "react";
 import React from "react";
+import { UploadButton } from "@/lib/uploadthing";
 
 const NoteCard = ({
   id,
@@ -21,6 +22,7 @@ const NoteCard = ({
   isPinned,
   isArchived,
   remindAt,
+  images,
 }: Notes) => {
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
@@ -28,26 +30,24 @@ const NoteCard = ({
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [NOTES_KEY] }),
   });
 
-  const togglePinned = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
-    e.stopPropagation();
+  const togglePinned = () => {
     mutate({ id, isPinned: !isPinned });
   };
 
-  const toggleArchived = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
-    e.stopPropagation();
+  const toggleArchived = () => {
     mutate({ id, isArchived: !isArchived });
   };
 
   const displayReminder = useMemo(() => {
     if (!remindAt) return undefined;
 
-    return new Intl.DateTimeFormat("en-US", {
+    return new Date(`${remindAt} UTC`).toLocaleString("en-US", {
       weekday: "short",
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
       hour12: true,
-    }).format(new Date(remindAt));
+    });
   }, [remindAt]);
 
   return (
@@ -59,6 +59,18 @@ const NoteCard = ({
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-1">
+        {images && (
+          <div className="relative mb-2 overflow-hidden rounded">
+            <img className="w-full" src={images[0].url} alt="upload-image" />
+            {images.length > 1 && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                <p className="text-xl font-bold text-white">
+                  +{images.length - 1}
+                </p>
+              </div>
+            )}
+          </div>
+        )}
         {displayReminder && (
           <Badge
             variant="secondary"
@@ -68,7 +80,10 @@ const NoteCard = ({
             <span className="mx-2">{displayReminder}</span>
           </Badge>
         )}
-        <div className="-mx-1.5 -mb-1.5 flex items-center text-muted-foreground opacity-0 transition-opacity group-hover/note:opacity-100">
+        <div
+          className="-mx-1.5 -mb-1.5 flex w-fit items-center text-muted-foreground opacity-0 transition-opacity group-hover/note:opacity-100"
+          onClick={(e) => e.stopPropagation()}
+        >
           <Bookmark
             size={32}
             className={cn(
@@ -76,6 +91,29 @@ const NoteCard = ({
               isArchived && "fill-muted-foreground",
             )}
             onClick={toggleArchived}
+          />
+          <UploadButton
+            endpoint="imageUploader"
+            className="size-8"
+            appearance={{
+              allowedContent: "hidden",
+              button: "!text-inherit",
+            }}
+            onClientUploadComplete={(res) => {
+              // Map the result itself into another object array
+              mutate({
+                id,
+                images: images ? images.concat(res) : res,
+              });
+            }}
+            content={{
+              button: (
+                <ImageIcon
+                  className="rounded-full p-1.5 hover:cursor-pointer hover:bg-gray-200/50 dark:hover:bg-neutral-800"
+                  size={32}
+                />
+              ),
+            }}
           />
           <NoteCardOptions id={id} />
           <Pin
