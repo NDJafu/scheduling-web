@@ -1,7 +1,7 @@
 import { Button } from "../ui/button";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import AddReminder from "./AddReminder";
-import { addNotes, Notes, NOTES_KEY } from "@/apis/notes.api";
+import { addNotes, Note, NOTES_KEY } from "@/apis/notes.api";
 import { useUser } from "@clerk/clerk-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useEffect } from "react";
@@ -25,7 +25,7 @@ const NewNoteForm = ({ showForm, setShowForm }: NewNoteFormProps) => {
 
   const { user } = useUser();
 
-  const form = useForm<Notes>({
+  const form = useForm<Note>({
     defaultValues: {
       createdBy: user?.id,
     },
@@ -33,7 +33,7 @@ const NewNoteForm = ({ showForm, setShowForm }: NewNoteFormProps) => {
 
   const { register, handleSubmit, reset } = form;
 
-  const onSubmit: SubmitHandler<Notes> = (data) => {
+  const onSubmit: SubmitHandler<Note> = (data) => {
     if (data.content === "") {
       setShowForm(false);
       return;

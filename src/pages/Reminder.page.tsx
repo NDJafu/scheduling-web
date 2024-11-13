@@ -1,4 +1,4 @@
-import { NOTES_KEY, Notes, getNotesByUser } from "@/apis/notes.api";
+import { NOTES_KEY, Note, getNotesByUser } from "@/apis/notes.api";
 import EditNoteCard from "@/components/EditNoteCard";
 import NewNote from "@/components/NewNote";
 import { useMainLayoutContext } from "@/contexts/MainLayout.context";
@@ -33,7 +33,7 @@ const ReminderPage = () => {
             "mx-auto flex w-2/3 flex-col gap-4 lg:w-1/3": layoutMode === "list",
           })}
         >
-          {data?.map((note: Notes) => (
+          {data?.map((note: Note) => (
             <EditNoteCard key={note.id} note={note} />
           ))}
         </div>

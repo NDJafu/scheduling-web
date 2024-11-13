@@ -1,7 +1,8 @@
 import { api } from ".";
 import { RequiredFields } from "@/lib/helpers";
+import { Tags } from "./tags.api";
 
-export interface Notes {
+export interface Note {
   id: string;
   title: string;
   content: string;
@@ -12,27 +13,37 @@ export interface Notes {
   createdAt: string;
   createdBy: string;
   updatedAt: string;
+  tags: Tags[];
 }
 
 export const NOTES_KEY = "notes";
 
-export const getNotes = async (): Promise<Notes[]> => {
+export const getNotes = async (): Promise<Note[]> => {
   const response = await api.get("/notes");
   return response.data;
 };
 
-export const getNotesByUser = async (userId: string): Promise<Notes[]> => {
+export const getNotesByUser = async (userId: string): Promise<Note[]> => {
   const response = await api.get(`/notes/user/${userId}`);
   return response.data;
 };
 
-export const addNotes = async (note: Partial<Notes> | Partial<Notes>[]) => {
+interface TagWithNotes extends Tags {
+  notes: Note[];
+}
+
+export const getNotesByTagName = async (
+  tagName: string,
+): Promise<TagWithNotes> => {
+  const response = await api.get(`/tags/name/${tagName}`);
+  return response.data;
+};
+
+export const addNotes = async (note: Partial<Note> | Partial<Note>[]) => {
   await api.post("/notes", { note });
 };
 
-export const updateNote = async (
-  note: RequiredFields<Partial<Notes>, "id">,
-) => {
+export const updateNote = async (note: RequiredFields<Partial<Note>, "id">) => {
   await api.patch(`/notes/${note.id}`, { ...note });
 };
 

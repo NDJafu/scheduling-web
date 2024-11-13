@@ -6,7 +6,7 @@ import {
   CardDescription,
   CardContent,
 } from "./ui/card";
-import { Notes, NOTES_KEY, updateNote } from "@/apis/notes.api";
+import { Note, NOTES_KEY, updateNote } from "@/apis/notes.api";
 import { cn } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import NoteCardOptions from "./NoteCardOptions";
@@ -23,7 +23,8 @@ const NoteCard = ({
   isArchived,
   remindAt,
   images,
-}: Notes) => {
+  tags,
+}: Note) => {
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
     mutationFn: updateNote,
@@ -115,7 +116,7 @@ const NoteCard = ({
               ),
             }}
           />
-          <NoteCardOptions id={id} />
+          <NoteCardOptions id={id} tags={tags} />
           <Pin
             size={40}
             className={cn(

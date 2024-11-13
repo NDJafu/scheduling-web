@@ -8,6 +8,7 @@ import RootLayout from "./layouts/RootLayout";
 import ReminderPage from "./pages/Reminder.page";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ArchivesPage from "./pages/Archives.page";
+import TagNotesPage from "./pages/TagNotes.page";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
           {
             path: "/archives",
             element: <ArchivesPage />,
+          },
+          {
+            path: "/tag/:name",
+            element: <TagNotesPage />,
           },
         ],
       },

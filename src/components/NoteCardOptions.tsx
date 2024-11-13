@@ -6,10 +6,11 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteNote, Notes, NOTES_KEY } from "@/apis/notes.api";
+import { deleteNote, Note, NOTES_KEY } from "@/apis/notes.api";
 import { useState } from "react";
+import ManageLabelForm from "./forms/ManageLabelForm";
 
-const NoteCardOptions = (notes: Partial<Notes>) => {
+const NoteCardOptions = (note: Partial<Note>) => {
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
@@ -20,8 +21,8 @@ const NoteCardOptions = (notes: Partial<Notes>) => {
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger
-        onClick={(e) => {
-          e.stopPropagation();
+        asChild
+        onClick={() => {
           setOpen(!open);
         }}
       >
@@ -30,16 +31,15 @@ const NoteCardOptions = (notes: Partial<Notes>) => {
           className="rounded-full p-1.5 hover:cursor-pointer hover:bg-gray-200/50 dark:hover:bg-neutral-800"
         />
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuItem
-          onClick={(e) => {
-            console.log(notes.id);
-            mutate(notes.id!);
-            e.stopPropagation();
-          }}
-        >
+      <DropdownMenuContent
+        onClick={(e) => e.stopPropagation()}
+        className="w-40"
+        align="start"
+      >
+        <DropdownMenuItem onClick={() => mutate(note.id!)}>
           Delete note
         </DropdownMenuItem>
+        <ManageLabelForm {...note} />
       </DropdownMenuContent>
     </DropdownMenu>
   );

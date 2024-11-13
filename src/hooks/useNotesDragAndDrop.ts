@@ -1,4 +1,4 @@
-import { Notes, NOTES_KEY, getNotesByUser } from "@/apis/notes.api";
+import { Note, NOTES_KEY, getNotesByUser } from "@/apis/notes.api";
 import { useUser } from "@clerk/clerk-react";
 import { ParentConfig, animations } from "@formkit/drag-and-drop";
 import { useDragAndDrop } from "@formkit/drag-and-drop/react";
@@ -8,13 +8,13 @@ import { useEffect } from "react";
 export const useNotesDragAndDrop = () => {
   const { user } = useUser();
 
-  const config: Partial<ParentConfig<Notes>> = {
+  const config: Partial<ParentConfig<Note>> = {
     sortable: true,
     plugins: [animations()],
     dragPlaceholderClass: "opacity-0",
   };
 
-  const [parentRef, notes, setValues] = useDragAndDrop<HTMLDivElement, Notes>(
+  const [parentRef, notes, setValues] = useDragAndDrop<HTMLDivElement, Note>(
     [],
     config,
   );
@@ -25,36 +25,28 @@ export const useNotesDragAndDrop = () => {
   });
 
   useEffect(() => {
-    const order: Notes[] = JSON.parse(
+    const order: Note[] = JSON.parse(
       localStorage.getItem("notes_order") ?? "[]",
     );
 
     if (!data) return;
 
     if (order) {
-      const diff = data.length - order.length;
+      const dataMap = new Map(data.map((item) => [item.id, item]));
+
+      const updatedOrder = order.filter((item) => dataMap.has(item.id));
+
+      const diff = data.length - updatedOrder.length;
 
       if (diff > 0) {
-        order.unshift(...data.slice(0, diff));
+        updatedOrder.unshift(...data.slice(0, diff));
       }
 
-      for (let i = 0; i < order.length; i++) {
-        const exists = data.some((newData) => newData.id === order[i].id);
-
-        // Item in order no longer exist so skip to next iteration
-        if (!exists) {
-          order.splice(i, 1);
-          continue;
-        }
-
-        data.forEach((note) => {
-          if (note.id === order[i].id) {
-            order[i] = note;
-          }
-        });
+      for (let i = 0; i < updatedOrder.length; i++) {
+        updatedOrder[i] = dataMap.get(updatedOrder[i].id)!;
       }
 
-      setValues(order);
+      setValues(updatedOrder);
       return;
     }
 

@@ -1,9 +1,20 @@
 import { useMainLayoutContext } from "@/contexts/MainLayout.context";
 import SidebarNavLink from "./SidebarNavLink";
 import { cn } from "@/lib/utils";
+import { Separator } from "../ui/separator";
+import { useUser } from "@clerk/clerk-react";
+import { useQuery } from "@tanstack/react-query";
+import { getTagsByUser, TAGS_KEY } from "@/apis/tags.api";
+import EditTagsDialog from "../tags/EditTagsDialog";
 
 const Sidebar = () => {
   const { showSidebar } = useMainLayoutContext();
+  const { user } = useUser();
+  const { data: tags } = useQuery({
+    queryFn: () => getTagsByUser(user!.id),
+    queryKey: [TAGS_KEY],
+    enabled: Boolean(user?.id),
+  });
 
   const sidebarDisplayState = showSidebar ? "open" : "closed";
 
@@ -27,6 +38,13 @@ const Sidebar = () => {
         <SidebarNavLink to="/archives" icon="BookMarked">
           Archives
         </SidebarNavLink>
+        <Separator className="my-2 group-data-[state=open]/sidebar:mx-auto" />
+        {tags?.map((tag) => (
+          <SidebarNavLink key={tag.id} to={`/tag/${tag.name}`} icon="Tag">
+            {tag.name}
+          </SidebarNavLink>
+        ))}
+        <EditTagsDialog />
       </nav>
     </aside>
   );

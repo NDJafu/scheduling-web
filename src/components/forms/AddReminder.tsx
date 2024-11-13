@@ -7,7 +7,7 @@ import {
 } from "../ui/popover";
 import { Button } from "../ui/button";
 import { useFormContext } from "react-hook-form";
-import { Notes } from "@/apis/notes.api";
+import { Note } from "@/apis/notes.api";
 import { cn } from "@/lib/utils";
 import { useAddReminder } from "@/hooks/useAddReminder";
 import { Calendar } from "../ui/calendar";
@@ -16,7 +16,7 @@ import { Input } from "../ui/input";
 
 const AddReminder = () => {
   const { options, tab, setTab, format, formatTime } = useAddReminder();
-  const { setValue } = useFormContext<Notes>();
+  const { setValue } = useFormContext<Note>();
 
   const [datePickerValue, setDatePickerValue] = useState<Date>();
   const [isValidTime, setIsValidTime] = useState<boolean>(true);
@@ -160,7 +160,9 @@ const AddReminder = () => {
                   className="absolute bottom-0 right-0"
                   type="button"
                   disabled={!datePickerValue || !isValidTime}
-                  onClick={() => setValue("remindAt", datePickerValue!)}
+                  onClick={() =>
+                    setValue("remindAt", datePickerValue!.toISOString())
+                  }
                 >
                   Save
                 </Button>
@@ -191,14 +193,14 @@ export const ReminderOption = ({
     hour12: true,
   }).format(new Date(time));
 
-  const { setValue } = useFormContext<Notes>();
+  const { setValue } = useFormContext<Note>();
 
   return (
     <PopoverClose asChild>
       <Button
         variant="outline"
         className="flex w-full justify-between rounded-sm px-2"
-        onClick={() => setValue("remindAt", new Date(time))}
+        onClick={() => setValue("remindAt", new Date(time).toISOString())}
       >
         <span className="font-medium">{text}</span>
         <span>{displayTime}</span>

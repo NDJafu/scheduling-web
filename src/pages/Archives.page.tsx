@@ -1,4 +1,4 @@
-import { NOTES_KEY, Notes, getNotesByUser } from "@/apis/notes.api";
+import { NOTES_KEY, Note, getNotesByUser } from "@/apis/notes.api";
 import EditNoteCard from "@/components/EditNoteCard";
 import { useMainLayoutContext } from "@/contexts/MainLayout.context";
 import { cn } from "@/lib/utils";
@@ -31,7 +31,7 @@ const ArchivesPage = () => {
             "mx-auto flex w-2/3 flex-col gap-4 lg:w-1/3": layoutMode === "list",
           })}
         >
-          {data?.map((note: Notes) => (
+          {data?.map((note: Note) => (
             <EditNoteCard key={note.id} note={note} />
           ))}
         </div>

@@ -1,11 +1,11 @@
-import { Notes, NOTES_KEY, updateNote } from "@/apis/notes.api";
+import { Note, NOTES_KEY, updateNote } from "@/apis/notes.api";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "../ui/button";
 import AddReminder from "./AddReminder";
 import RemindAtBadge from "../RemindAtBadge";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-type EditNoteFormProps = Notes & {
+type EditNoteFormProps = Note & {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
@@ -13,12 +13,12 @@ const EditNoteForm = ({ setOpen, ...note }: EditNoteFormProps) => {
   const { id, title, content, remindAt } = note;
   const queryClient = useQueryClient();
 
-  const form = useForm<Notes>({
+  const form = useForm<Note>({
     defaultValues: {
       id,
       title,
       content,
-      remindAt: new Date(`${remindAt} UTC`),
+      remindAt: remindAt && `${remindAt} UTC`,
     },
   });
 
@@ -32,7 +32,7 @@ const EditNoteForm = ({ setOpen, ...note }: EditNoteFormProps) => {
     },
   });
 
-  const onSubmit: SubmitHandler<Notes> = (data) => {
+  const onSubmit: SubmitHandler<Note> = (data) => {
     mutate(data);
   };
 

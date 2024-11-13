@@ -1,11 +1,11 @@
-import { Notes } from "@/apis/notes.api";
+import { Note } from "@/apis/notes.api";
 import { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 import { Badge } from "./ui/badge";
 import { Clock, X } from "lucide-react";
 
 const RemindAtBadge = () => {
-  const { watch, setValue } = useFormContext<Notes>();
+  const { watch, setValue } = useFormContext<Note>();
 
   const remindAt = watch("remindAt");
 
@@ -23,7 +23,7 @@ const RemindAtBadge = () => {
     return time;
   }, [remindAt]);
 
-  if (displayReminder !== "Invalid Date")
+  if (displayReminder && displayReminder !== "Invalid Date")
     return (
       <Badge
         variant="secondary"

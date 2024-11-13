@@ -3,20 +3,24 @@ import Header from "@/components/common/Header";
 import Sidebar from "@/components/common/Sidebar";
 import { MainLayoutProvider } from "@/contexts/MainLayout.context";
 import { useAuth } from "@clerk/clerk-react";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
 const MainLayout = () => {
-  const [token, setToken] = useState<string | null>();
-  const { isSignedIn, getToken } = useAuth();
   const navigate = useNavigate();
+  const { isSignedIn, getToken } = useAuth();
+  const { data: token } = useQuery({
+    queryFn: async () => await getToken(),
+    queryKey: ["token"],
+    enabled: isSignedIn,
+  });
 
   useEffect(() => {
     let requestInterceptor = null;
 
     requestInterceptor = api.interceptors.request.use(
       async (config) => {
-        const token = await getToken();
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }
@@ -27,10 +31,6 @@ const MainLayout = () => {
       },
     );
 
-    getToken().then((token) => {
-      setToken(token);
-    });
-
     if (!isSignedIn) {
       navigate("/sign-in");
     }
@@ -38,9 +38,7 @@ const MainLayout = () => {
     return () => {
       api.interceptors.request.eject(requestInterceptor);
     };
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isSignedIn, token]);
 
   return (
     <MainLayoutProvider>

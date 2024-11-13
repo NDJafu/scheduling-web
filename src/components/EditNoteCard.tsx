@@ -1,4 +1,4 @@
-import { Notes } from "@/apis/notes.api";
+import { Note } from "@/apis/notes.api";
 import NoteCard from "./NoteCard";
 import {
   Dialog,
@@ -13,7 +13,7 @@ import EditNoteForm from "./forms/EditNoteForm";
 import { ComponentPropsWithoutRef } from "react";
 import { cn } from "@/lib/utils";
 
-type EditNoteCardProps = { note: Notes } & ComponentPropsWithoutRef<"button">;
+type EditNoteCardProps = { note: Note } & ComponentPropsWithoutRef<"button">;
 
 const EditNoteCard = ({ note, className }: EditNoteCardProps) => {
   const { open, setOpen, triggerRef, transform } = useEditNoteCard();
