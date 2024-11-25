@@ -1,12 +1,18 @@
 import { cn } from "@/lib/utils";
 import { Search, X } from "lucide-react";
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 const SearchBar = () => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get("q");
+  const [searchQuery, setSearchQuery] = useState(query ?? "");
 
   const onSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const params = new URLSearchParams();
+    params.set("q", searchQuery);
+    setSearchParams(params);
   };
 
   return (
@@ -26,7 +32,12 @@ const SearchBar = () => {
         <button
           className={cn("m-[3px] p-2", { invisible: !searchQuery })}
           type="button"
-          onClick={() => setSearchQuery("")}
+          onClick={() => {
+            setSearchQuery("");
+            const params = new URLSearchParams();
+            params.set("q", "");
+            setSearchParams(params);
+          }}
         >
           <X className="text-inherit" size={24} />
         </button>
