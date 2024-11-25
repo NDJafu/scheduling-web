@@ -28,14 +28,8 @@ export const getNotesByUser = async (userId: string): Promise<Note[]> => {
   return response.data;
 };
 
-interface TagWithNotes extends Tags {
-  notes: Note[];
-}
-
-export const getNotesByTagName = async (
-  tagName: string,
-): Promise<TagWithNotes> => {
-  const response = await api.get(`/tags/name/${tagName}`);
+export const getNotesByTagName = async (tagName: string): Promise<Note[]> => {
+  const response = await api.get(`/notes/tag/${tagName}`);
   return response.data;
 };
 

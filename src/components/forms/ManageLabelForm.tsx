@@ -13,7 +13,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useUser } from "@clerk/clerk-react";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { addNoteToTag } from "@/apis/relation.api";
+import {
+  addNoteToTag,
+  deleteNoteFromTag,
+  NoteToTag,
+} from "@/apis/relation.api";
 import { Note, NOTES_KEY } from "@/apis/notes.api";
 
 function ManageLabelForm(note: Partial<Note>) {
@@ -26,12 +30,27 @@ function ManageLabelForm(note: Partial<Note>) {
     enabled: Boolean(user?.id),
   });
 
-  const { mutate } = useMutation({
+  const { mutate: mutateUpdate, isPending: updatePending } = useMutation({
     mutationFn: addNoteToTag,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [NOTES_KEY] });
     },
   });
+
+  const { mutate: mutateDelete, isPending: deletePending } = useMutation({
+    mutationFn: deleteNoteFromTag,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [NOTES_KEY] });
+    },
+  });
+
+  const toggleUpdate = (data: NoteToTag, hasLabel: boolean) => {
+    if (hasLabel) {
+      mutateDelete(data);
+      return;
+    }
+    mutateUpdate(data);
+  };
 
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -64,7 +83,13 @@ function ManageLabelForm(note: Partial<Note>) {
                   <CommandItem
                     key={tag.id}
                     value={tag.name}
-                    onSelect={() => mutate({ noteId: note.id!, tagId: tag.id })}
+                    onSelect={() =>
+                      toggleUpdate(
+                        { noteId: note.id!, tagId: tag.id },
+                        hasLabel!,
+                      )
+                    }
+                    disabled={updatePending || deletePending}
                   >
                     <Check
                       className={cn("h-4 w-4", { "opacity-0": !hasLabel })}

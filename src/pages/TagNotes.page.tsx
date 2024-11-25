@@ -13,7 +13,6 @@ const TagNotesPage = () => {
   const { data: notes } = useQuery({
     queryFn: () => getNotesByTagName(name!),
     queryKey: [NOTES_KEY, "tag", name],
-    select: (data) => data.notes,
   });
 
   return (
