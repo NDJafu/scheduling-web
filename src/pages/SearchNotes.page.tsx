@@ -8,6 +8,7 @@ import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 
 const SearchResults = () => {
+  // Tân
   const { user } = useUser();
   const { layoutMode } = useMainLayoutContext();
   // hook này để lấy chuỗi để so sánh từ url
