@@ -9,7 +9,7 @@
 | MSSV          | Tên thành viên     |
 | ------------- | ------------------ |
 | 2174801030168 | Nguyễn Đỗ Gia Phú  |
-| 2174801030059 | Đặng Đăng Đăng     |
+| 217480103i0059 | Đặng Đăng Đăng     |
 | 2174801030168 | Nguyễn Đỗ Nhật Tân |
 
 **2. Giới thiệu công nghệ:**
@@ -249,3 +249,16 @@ Bảng quan hệ giữa Ghi chú và Nhãn (NotesToTags):
   Link: https://github.com/NDJafu/scheduling-web
 - Server:
   Link: https://github.com/NDJafu/kys-api
+- Folder Tree:
+  - Scheduling-web: Main folder chứa dự án
+    - fonts: chứa file fonts sử dụng trong dự án
+    - src: 
+      - apis: Chứa các hàm để tương tác với API bên ngoài.
+      - assets: Lưu trữ các tài sản tĩnh như hình ảnh, font, icon.
+      - components: Nơi ở của các thành phần giao diện tái sử dụng.
+      - constants: Đựng các hằng số, giá trị không đổi trong ứng dụng.
+      - contexts: Quản lý dữ liệu toàn cục, chia sẻ giữa các component.
+      - hooks: Tạo các hàm tùy chỉnh để tái sử dụng logic.
+      - layouts: Xác định cấu trúc chung của các trang.
+      - lib: Lưu trữ các thư viện hoặc hàm hỗ trợ chung.
+      - pages: Chứa các trang riêng lẻ của ứng dụng.
